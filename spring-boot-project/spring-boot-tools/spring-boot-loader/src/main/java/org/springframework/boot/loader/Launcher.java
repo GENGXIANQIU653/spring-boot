@@ -46,8 +46,16 @@ public abstract class Launcher {
 	 * @throws Exception if the application fails to launch
 	 */
 	protected void launch(String[] args) throws Exception {
+		// <1> 注册 URL 协议的处理器
+		// 调用 JarFile 的 #registerUrlProtocolHandler() 方法，注册 Spring Boot 自定义的 URLStreamHandler 实现类，用于 jar 包的加载读取
 		JarFile.registerUrlProtocolHandler();
+		// <2> 创建类加载器
+		// 创建自定义的 ClassLoader 实现类，用于从 jar 包中加载类
+		// <2.1> getClassPathArchives
+		// <2.2> createClassLoader
 		ClassLoader classLoader = createClassLoader(getClassPathArchives());
+		// <3> 执行启动类的 main 方法
+		// 执行我们声明的 Spring Boot 启动类，进行 Spring Boot 应用的启动
 		launch(args, getMainClass(), classLoader);
 	}
 
