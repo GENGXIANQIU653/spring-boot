@@ -40,6 +40,14 @@ import org.springframework.core.env.Environment;
  *
  * @author Phillip Webb
  * @since 2.0.0
+ * // <1.1> 配置类
+ * //通过 @Configuration 注解的配置类，可以解决“创建哪些 Bean”的问题
+ *
+ * // <2.1> 条件注解
+ * // 通过条件注解，可以解决“满足什么样的条件？”的问题
+ *
+ * // <3.1> 配置属性
+ * // 使用 @EnableConfigurationProperties 注解，让 ServerProperties 配置属性类生效
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnWebApplication
@@ -49,13 +57,16 @@ public class EmbeddedWebServerFactoryCustomizerAutoConfiguration {
 	/**
 	 * Nested configuration if Tomcat is being used.
 	 */
+	// <1.2>
 	@Configuration(proxyBeanMethods = false)
+	// <2.2>
 	@ConditionalOnClass({ Tomcat.class, UpgradeProtocol.class })
 	public static class TomcatWebServerFactoryCustomizerConfiguration {
 
 		@Bean
 		public TomcatWebServerFactoryCustomizer tomcatWebServerFactoryCustomizer(Environment environment,
 				ServerProperties serverProperties) {
+			// <3.2>
 			return new TomcatWebServerFactoryCustomizer(environment, serverProperties);
 		}
 
@@ -64,7 +75,7 @@ public class EmbeddedWebServerFactoryCustomizerAutoConfiguration {
 	/**
 	 * Nested configuration if Jetty is being used.
 	 */
-	@Configuration(proxyBeanMethods = false)
+	@Configuration(proxyBeanMethods = false) // <1.3>
 	@ConditionalOnClass({ Server.class, Loader.class, WebAppContext.class })
 	public static class JettyWebServerFactoryCustomizerConfiguration {
 
