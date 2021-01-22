@@ -42,6 +42,11 @@ import org.springframework.util.ErrorHandler;
  * @author Andy Wilkinson
  * @author Artsiom Yudovin
  * @since 1.0.0
+ *
+ * 实现 SpringApplicationRunListener、Ordered 接口，
+ * 将 SpringApplicationRunListener 监听到的事件，转换成对应的 SpringApplicationEvent 事件，发布到监听器们
+ *
+ *
  */
 public class EventPublishingRunListener implements SpringApplicationRunListener, Ordered {
 
@@ -49,6 +54,9 @@ public class EventPublishingRunListener implements SpringApplicationRunListener,
 
 	private final String[] args;
 
+	/**
+	 * 事件广播器
+	 */
 	private final SimpleApplicationEventMulticaster initialMulticaster;
 
 	public EventPublishingRunListener(SpringApplication application, String[] args) {
@@ -72,14 +80,12 @@ public class EventPublishingRunListener implements SpringApplicationRunListener,
 
 	@Override
 	public void environmentPrepared(ConfigurableEnvironment environment) {
-		this.initialMulticaster
-				.multicastEvent(new ApplicationEnvironmentPreparedEvent(this.application, this.args, environment));
+		this.initialMulticaster.multicastEvent(new ApplicationEnvironmentPreparedEvent(this.application, this.args, environment));
 	}
 
 	@Override
 	public void contextPrepared(ConfigurableApplicationContext context) {
-		this.initialMulticaster
-				.multicastEvent(new ApplicationContextInitializedEvent(this.application, this.args, context));
+		this.initialMulticaster.multicastEvent(new ApplicationContextInitializedEvent(this.application, this.args, context));
 	}
 
 	@Override

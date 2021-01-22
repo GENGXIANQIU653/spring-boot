@@ -471,6 +471,7 @@ public class SpringApplication {
 	}
 
 	private void refreshContext(ConfigurableApplicationContext context) {
+		// <2> 注册 ShutdownHook 钩子
 		if (this.registerShutdownHook) {
 			try {
 				context.registerShutdownHook();
@@ -479,6 +480,7 @@ public class SpringApplication {
 				// Not allowed in some environments.
 			}
 		}
+		// <1> 开启（刷新）Spring 容器
 		refresh(context);
 	}
 
@@ -785,7 +787,9 @@ public class SpringApplication {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Loading source " + StringUtils.arrayToCommaDelimitedString(sources));
 		}
+		// <1> 创建 BeanDefinitionLoader 对象
 		BeanDefinitionLoader loader = createBeanDefinitionLoader(getBeanDefinitionRegistry(context), sources);
+		// <2> 设置 loader 的属性
 		if (this.beanNameGenerator != null) {
 			loader.setBeanNameGenerator(this.beanNameGenerator);
 		}
@@ -795,6 +799,7 @@ public class SpringApplication {
 		if (this.environment != null) {
 			loader.setEnvironment(this.environment);
 		}
+		// <3> 执行 BeanDefinition 加载
 		loader.load();
 	}
 
