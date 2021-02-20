@@ -236,11 +236,13 @@ public class SpringApplication {
 
 	/**
 	 * ApplicationContextInitializer 数组
+	 * 通过 #getSpringFactoriesInstances(Class<T> type) 方法，进行获得
 	 */
 	private List<ApplicationContextInitializer<?>> initializers;
 
 	/**
 	 * ApplicationListener 数组
+	 * 通过 #getSpringFactoriesInstances(Class<T> type) 方法，进行获得 ApplicationListener 类型的对象数组
 	 */
 	private List<ApplicationListener<?>> listeners;
 
@@ -495,12 +497,11 @@ public class SpringApplication {
 				getSpringFactoriesInstances(SpringApplicationRunListener.class, types, this, args));
 	}
 
-	// <1>
+	// 获得指定类对应的对象们
 	private <T> Collection<T> getSpringFactoriesInstances(Class<T> type) {
 		return getSpringFactoriesInstances(type, new Class<?>[] {});
 	}
 
-	// <2>
 	private <T> Collection<T> getSpringFactoriesInstances(Class<T> type, Class<?>[] parameterTypes, Object... args) {
 		ClassLoader classLoader = getClassLoader();
 		// Use names and ensure unique to protect against duplicates

@@ -49,8 +49,11 @@ import org.springframework.data.repository.Repository;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
+// 标记这是一个 Spring Boot 配置类
 @SpringBootConfiguration
+// 开启自动配置功能，spring-boot-autoconfigure 项目最核心的注解
 @EnableAutoConfiguration
+// 扫描指定路径下的 Component
 @ComponentScan(excludeFilters = { @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
 		@Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })
 public @interface SpringBootApplication {
